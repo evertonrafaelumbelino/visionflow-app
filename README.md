@@ -134,10 +134,10 @@ Este projeto é um trabalho acadêmico desenvolvido no âmbito da Robótica do *
 Este projeto está em desenvolvimento para apresentação na GeniusCon 2026 por uma equipe de robótica do Colégio Estadual David Carneiro (Guapirama - PR). O grupo é composto por quatro estudantes do Ensino Médio e conta com a coordenação e orientação do corpo docente da instituição.
 
 Estudantes:
-- [Everton Rafael Umbelino dos Santos](https://github.com/evertonrafalumbelino)
+- [Everton Rafael Umbelino dos Santos](https://github.com/evertonrafaelumbelino)
 - Karolaine Ribeiro de Brito
 - Gabriel Rodrigues Silva de Souza
 - Ana Clara do Prado Eggeia
 
 Professora orientadora:
-- Ana Crispim de Sousa Castro
+- [Ana Crispim de Sousa Castro](https://github.com/AnaCrispim)
