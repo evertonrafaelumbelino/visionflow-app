@@ -3,6 +3,8 @@ library;
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
+import '../../../../app/theme/app_colors.dart';
+import '../../../../app/theme/app_decorations.dart';
 import '../../../../core/constants/ble_constants.dart';
 import '../../../../core/utils/logger.dart';
 import '../../domain/entities/esp32_device.dart';
@@ -14,11 +16,7 @@ import '../widgets/device_card.dart';
 import '../widgets/connection_status.dart';
 
 /// Tela de conexão BLE com o ESP32
-/// 
-/// Esta é a tela principal do Milestone 1
-/// Interface de alto contraste para acessibilidade
-/// Permite escanear e conectar ao VisionFlow-ESP32
-
+/// Interface moderna e acessível seguindo o design system VisionFlow
 class ConnectionPage extends StatefulWidget {
   const ConnectionPage({super.key});
   
@@ -63,8 +61,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
   /// Inicializa o repositório BLE e use cases
   Future<void> _initializeBle() async {
     try {
-      // TODO: Usar injeção de dependência (get_it) no futuro
-      // Por enquanto, criamos a implementação diretamente
       _bleRepository = BleRepositoryImpl();
       _scanDevices = ScanDevices(_bleRepository);
       _connectDevice = ConnectDevice(_bleRepository);
@@ -134,7 +130,6 @@ class _ConnectionPageState extends State<ConnectionPage> {
       
       if (result.hasVisionFlowDevice && result.visionFlowDevice != null) {
         log.success('VisionFlow-ESP32 encontrado!');
-        // Auto-conecta se encontrou o dispositivo
         _connectToDevice(result.visionFlowDevice!);
       } else {
         log.warning('VisionFlow-ESP32 não encontrado');
@@ -172,16 +167,19 @@ class _ConnectionPageState extends State<ConnectionPage> {
       
       log.success('Conectado com sucesso!');
       
-      // Mostra mensagem de sucesso
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               'Conectado a ${connectedDevice.displayName}!',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 16),
             ),
             backgroundColor: AppTheme.successColor,
             duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         );
       }
@@ -219,20 +217,21 @@ class _ConnectionPageState extends State<ConnectionPage> {
   @override
   Widget build(BuildContext context) {
     log.ui('Building ConnectionPage');
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.primaryBackground,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'VisionFlow',
           style: TextStyle(
-            fontSize: AppTheme.fontSizeXLarge,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: AppTheme.textPrimary,
+            color: isDark ? Colors.white : AppColors.textPrimary,
           ),
         ),
-        backgroundColor: AppTheme.surfaceColor,
-        elevation: 4,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
       ),
       body: SafeArea(
@@ -255,27 +254,31 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 ElevatedButton(
                   onPressed: _isScanning ? null : _startScan,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.secondaryColor,
-                    foregroundColor: AppTheme.textOnPrimary,
+                    backgroundColor: AppColors.primaryColor,
+                    foregroundColor: AppColors.textOnPrimary,
                     minimumSize: const Size(
                       double.infinity,
-                      AppTheme.buttonMinHeight,
+                      56,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppDecorations.buttonBorderRadius),
                     ),
                   ),
                   child: _isScanning
                       ? const SizedBox(
-                          height: 32,
-                          width: 32,
+                          height: 24,
+                          width: 24,
                           child: CircularProgressIndicator(
-                            color: AppTheme.textOnPrimary,
+                            color: AppColors.textOnPrimary,
                             strokeWidth: 3,
                           ),
                         )
                       : const Text(
                           'BUSCAR ÓCULOS',
                           style: TextStyle(
-                            fontSize: AppTheme.fontSizeLarge,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
                           ),
                         ),
                 ),
@@ -284,18 +287,22 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 ElevatedButton(
                   onPressed: _disconnect,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.errorColor,
-                    foregroundColor: AppTheme.textOnPrimary,
+                    backgroundColor: AppColors.errorColor,
+                    foregroundColor: AppColors.textOnPrimary,
                     minimumSize: const Size(
                       double.infinity,
-                      AppTheme.buttonMinHeight,
+                      56,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppDecorations.buttonBorderRadius),
                     ),
                   ),
                   child: const Text(
                     'DESCONECTAR',
                     style: TextStyle(
-                      fontSize: AppTheme.fontSizeLarge,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
                     ),
                   ),
                 ),
@@ -308,23 +315,25 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 Container(
                   padding: const EdgeInsets.all(AppTheme.paddingMedium),
                   decoration: BoxDecoration(
-                    color: AppTheme.errorColor.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppTheme.errorColor, width: 2),
+                    color: AppColors.errorColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppColors.errorColor, width: 1.5),
                   ),
                   child: Row(
                     children: [
                       const Icon(
-                        Icons.error_outline,
-                        color: AppTheme.errorColor,
-                        size: 32,
+                        Icons.error_outline_rounded,
+                        color: AppColors.errorColor,
+                        size: 24,
                       ),
                       const SizedBox(width: AppTheme.paddingMedium),
                       Expanded(
                         child: Text(
                           _errorMessage!,
-                          style: AppTheme.darkTheme.textTheme.bodyLarge?.copyWith(
-                            color: AppTheme.errorColor,
+                          style: const TextStyle(
+                            color: AppColors.errorColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -338,9 +347,11 @@ class _ConnectionPageState extends State<ConnectionPage> {
               if (_discoveredDevices.isNotEmpty) ...[
                 Text(
                   'DISPOSITIVOS ENCONTRADOS (${_discoveredDevices.length})',
-                  style: AppTheme.darkTheme.textTheme.titleLarge?.copyWith(
-                    color: AppTheme.secondaryColor,
-                    fontWeight: FontWeight.bold,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                    letterSpacing: 0.5,
                   ),
                 ),
                 const SizedBox(height: AppTheme.paddingMedium),
@@ -352,24 +363,32 @@ class _ConnectionPageState extends State<ConnectionPage> {
               ] else if (!_isScanning && _connectionStatus != BleConnectionStatus.escaneando) ...[
                 // Estado vazio
                 Container(
-                  padding: const EdgeInsets.all(AppTheme.paddingLarge),
+                  padding: const EdgeInsets.all(AppTheme.paddingXLarge),
                   decoration: BoxDecoration(
-                    color: AppTheme.surfaceColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppTheme.textSecondary, width: 2),
+                    color: isDark ? AppColors.darkSurface : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Column(
                     children: [
                       Icon(
-                        Icons.bluetooth_searching,
+                        Icons.bluetooth_searching_rounded,
                         size: 64,
-                        color: AppTheme.textSecondary,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                       ),
                       const SizedBox(height: AppTheme.paddingMedium),
                       Text(
                         'Nenhum dispositivo encontrado',
-                        style: AppTheme.darkTheme.textTheme.bodyLarge?.copyWith(
-                          color: AppTheme.textSecondary,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                         ),
                         textAlign: TextAlign.center,
                       ),

@@ -32,8 +32,9 @@ class BleRepositoryImpl implements BleRepository {
   StreamSubscription<List<ScanResult>>? _scanSubscription;
   StreamSubscription<BluetoothConnectionState>? _connectionSubscription;
   
-  // Construtor
-  BleRepositoryImpl();
+  static final BleRepositoryImpl _instance = BleRepositoryImpl._internal();
+  factory BleRepositoryImpl() => _instance;
+  BleRepositoryImpl._internal();
   
   // ==================== STREAMS ====================
   

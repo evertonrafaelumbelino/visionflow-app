@@ -2,14 +2,12 @@ library;
 
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_theme.dart';
+import '../../../../app/theme/app_colors.dart';
 import '../../../../core/utils/logger.dart';
 import '../../domain/repositories/ble_repository.dart';
 
 /// Widget que exibe o status atual da conexão BLE
-/// 
-/// Mostra indicador visual e texto do estado da conexão
-/// Design de alto contraste para acessibilidade
-
+/// Design moderno com indicadores visuais claros
 class ConnectionStatus extends StatelessWidget {
   final BleConnectionStatus status;
   final String? deviceName;
@@ -25,25 +23,34 @@ class ConnectionStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log.ui('Building ConnectionStatus: $status');
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Container(
       padding: const EdgeInsets.all(AppTheme.paddingLarge),
       decoration: BoxDecoration(
-        color: _getStatusColor().withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(16),
+        color: _getStatusColor().withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppTheme.cardBorderRadius),
         border: Border.all(
           color: _getStatusColor(),
-          width: 3,
+          width: 2,
         ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Ícone de status
-          Icon(
-            _getStatusIcon(),
-            color: _getStatusColor(),
-            size: 64,
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: _getStatusColor().withValues(alpha: 0.15),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              _getStatusIcon(),
+              color: _getStatusColor(),
+              size: 40,
+            ),
           ),
           
           const SizedBox(height: AppTheme.paddingMedium),
@@ -51,9 +58,11 @@ class ConnectionStatus extends StatelessWidget {
           // Título do status
           Text(
             _getStatusTitle(),
-            style: AppTheme.darkTheme.textTheme.headlineMedium?.copyWith(
-              color: _getStatusColor(),
+            style: TextStyle(
+              fontSize: AppTheme.fontSizeXLarge,
               fontWeight: FontWeight.bold,
+              color: _getStatusColor(),
+              height: 1.3,
             ),
             textAlign: TextAlign.center,
           ),
@@ -64,8 +73,10 @@ class ConnectionStatus extends StatelessWidget {
           if (deviceName != null)
             Text(
               _getStatusDescription(),
-              style: AppTheme.darkTheme.textTheme.bodyLarge?.copyWith(
-                color: AppTheme.textPrimary,
+              style: TextStyle(
+                fontSize: AppTheme.fontSizeMedium,
+                color: isDark ? AppColors.darkTextSecondary : AppTheme.textSecondary,
+                height: 1.5,
               ),
               textAlign: TextAlign.center,
             ),
@@ -88,7 +99,7 @@ class ConnectionStatus extends StatelessWidget {
                   'TENTAR NOVAMENTE',
                   style: TextStyle(
                     fontSize: AppTheme.fontSizeMedium,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -104,7 +115,7 @@ class ConnectionStatus extends StatelessWidget {
       case BleConnectionStatus.desconectado:
         return AppTheme.textSecondary;
       case BleConnectionStatus.escaneando:
-        return AppTheme.warningColor;
+        return AppTheme.primaryColor;
       case BleConnectionStatus.conectando:
         return AppTheme.warningColor;
       case BleConnectionStatus.conectado:
@@ -120,17 +131,17 @@ class ConnectionStatus extends StatelessWidget {
   IconData _getStatusIcon() {
     switch (status) {
       case BleConnectionStatus.desconectado:
-        return Icons.bluetooth_disabled;
+        return Icons.bluetooth_disabled_rounded;
       case BleConnectionStatus.escaneando:
-        return Icons.search;
+        return Icons.search_rounded;
       case BleConnectionStatus.conectando:
-        return Icons.bluetooth_searching;
+        return Icons.bluetooth_searching_rounded;
       case BleConnectionStatus.conectado:
-        return Icons.bluetooth_connected;
+        return Icons.bluetooth_connected_rounded;
       case BleConnectionStatus.erro:
-        return Icons.error_outline;
+        return Icons.error_outline_rounded;
       case BleConnectionStatus.desconectando:
-        return Icons.bluetooth_disabled;
+        return Icons.bluetooth_disabled_rounded;
     }
   }
   
@@ -140,13 +151,13 @@ class ConnectionStatus extends StatelessWidget {
       case BleConnectionStatus.desconectado:
         return 'DESCONECTADO';
       case BleConnectionStatus.escaneando:
-        return 'ESCANEANDO DISPOSITIVOS';
+        return 'ESCANEANDO';
       case BleConnectionStatus.conectando:
         return 'CONECTANDO...';
       case BleConnectionStatus.conectado:
         return 'CONECTADO';
       case BleConnectionStatus.erro:
-        return 'ERRO DE CONEXÃO';
+        return 'ERRO';
       case BleConnectionStatus.desconectando:
         return 'DESCONECTANDO...';
     }

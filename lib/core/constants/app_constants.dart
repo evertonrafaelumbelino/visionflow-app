@@ -5,7 +5,7 @@ library;
 class AppConstants {
   // Nome do aplicativo
   static const String appName = 'VisionFlow';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '0.2.0';
   
   // Configurações de timeout
   static const int connectionTimeoutMs = 15000; // 15 segundos

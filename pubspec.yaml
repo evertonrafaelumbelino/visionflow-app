@@ -2,7 +2,7 @@ name: visionflow_app
 description: "Aplicativo mobile do projeto VisionFlow - Óculos assistivo inteligente para pessoas com deficiência visual."
 publish_to: 'none'
 
-version: 0.1.0+1
+version: 0.2.0+2
 
 environment:
   sdk: ^3.5.0
@@ -31,10 +31,25 @@ dependencies:
   # Animações
   flutter_animate: ^4.5.0
 
+  # Gráficos e persistência
+  fl_chart: ^0.69.0
+  shared_preferences: ^2.3.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1 
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/icon/
+    - assets/images/glasses_hero.png
+    - assets/images/glasses_device.png
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon/icon.png"
+  min_sdk_android: 21
