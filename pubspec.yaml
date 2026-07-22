@@ -2,7 +2,7 @@ name: visionflow_app
 description: "Aplicativo mobile do projeto VisionFlow - Óculos assistivo inteligente para pessoas com deficiência visual."
 publish_to: 'none'
 
-version: 0.2.0+2
+version: 0.3.0+3
 
 environment:
   sdk: ^3.5.0

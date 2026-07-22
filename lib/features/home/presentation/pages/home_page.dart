@@ -5,6 +5,11 @@ import '../../../../app/theme/app_decorations.dart';
 import '../../../../core/mock/app_mock_data.dart';
 import '../../../connection/data/repositories/ble_repository_impl.dart';
 import '../../../connection/domain/repositories/ble_repository.dart';
+import 'notifications_page.dart';
+import 'settings_page.dart';
+import 'language_page.dart';
+import 'audio_controls_page.dart';
+import 'battery_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -83,7 +88,12 @@ class _HomePageState extends State<HomePage> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.notifications_outlined, color: Colors.white, size: 28),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const NotificationsPage()),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -235,8 +245,34 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        // Feedback tátil ou ação
+                        final label = action['label'] as String;
+                        Widget? targetPage;
+                        if (label == 'Idiomas') {
+                          targetPage = const LanguagePage();
+                        } else if (label == 'Áudio') {
+                          targetPage = const AudioControlsPage();
+                        } else if (label == 'Bateria') {
+                          targetPage = const BatteryPage();
+                        } else if (label == 'Configurações') {
+                          targetPage = const SettingsPage();
+                        }
+
+                        if (targetPage != null) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => targetPage!),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Recurso "$label" em breve.'),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        }
                       },
+                      splashColor: AppColors.primaryColor.withValues(alpha: 0.2),
+                      highlightColor: AppColors.primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                       child: Ink(
                         decoration: AppDecorations.quickAction(isDark: isDark).copyWith(

@@ -54,10 +54,10 @@ class AppMockData {
 
   static const List<Map<String, dynamic>> quickActions = [
     {'label': 'Câmera', 'icon': Icons.camera_alt_outlined},
-    {'label': 'Tradução', 'icon': Icons.translate_outlined},
+    {'label': 'Idiomas', 'icon': Icons.translate_outlined},
     {'label': 'Navegação', 'icon': Icons.navigation_outlined},
     {'label': 'Áudio', 'icon': Icons.headphones_outlined},
-    {'label': 'Notificações', 'icon': Icons.notifications_outlined},
+    {'label': 'Bateria', 'icon': Icons.battery_std_outlined},
     {'label': 'Configurações', 'icon': Icons.settings_outlined},
   ];
 

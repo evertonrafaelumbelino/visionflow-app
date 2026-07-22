@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_decorations.dart';
 import '../../../../core/mock/app_mock_data.dart';
+import 'calendar_page.dart';
 
 class ActivitiesPage extends StatefulWidget {
   const ActivitiesPage({super.key});
@@ -34,7 +35,12 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.calendar_today_rounded, color: isDark ? Colors.white : AppColors.textPrimary),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CalendarPage()),
+              );
+            },
           ),
         ],
         backgroundColor: Colors.transparent,

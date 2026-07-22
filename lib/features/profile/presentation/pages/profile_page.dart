@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_decorations.dart';
 import '../../../../core/mock/app_mock_data.dart';
+import '../../../home/presentation/pages/settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -153,7 +154,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   icon: Icons.account_circle_outlined,
                   title: 'Configurações da conta',
                   isDark: isDark,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SettingsPage()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 12),
                 _buildMenuTile(
